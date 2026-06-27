@@ -38,7 +38,7 @@
         step needed for the JS-side widget to appear on the home screen.
       -->
       <receiver
-          android:name="com.reactnativeandroidwidget.RNAndroidWidgetProvider"
+          android:name="com.reactnativeandroidwidget.RNWidgetProvider"
           android:exported="true">
         <intent-filter>
           <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

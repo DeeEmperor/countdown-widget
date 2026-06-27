@@ -31,7 +31,7 @@ class ExamCountdownWidgetWorker(
         val manager = AppWidgetManager.getInstance(context)
         val provider = ComponentName(
             context,
-            "com.reactnativeandroidwidget.RNAndroidWidgetProvider"
+            "com.reactnativeandroidwidget.RNWidgetProvider"
         )
         val ids = manager.getAppWidgetIds(provider)
 
