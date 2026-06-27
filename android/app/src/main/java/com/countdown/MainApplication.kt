@@ -1,6 +1,7 @@
 package com.countdown
 
 import android.app.Application
+import com.countdown.widget.ExamCountdownWidgetWorker
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -23,5 +24,10 @@ class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     loadReactNative(this)
+
+    // Schedule the periodic WorkManager job that refreshes the home-screen widget.
+    // ExistingPeriodicWorkPolicy.KEEP means repeated calls are safe (no duplicates).
+    ExamCountdownWidgetWorker.enqueue(this)
   }
 }
+
