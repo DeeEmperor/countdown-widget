@@ -1,32 +1,16 @@
 /**
  * widgetTaskHandler.tsx
  * ─────────────────────────────────────────────
- * Registers the headless JS task handler that react-native-android-widget
- * calls whenever the widget needs to be rendered or updated.
- *
- * Lifecycle actions handled:
- *   WIDGET_ADDED   – user pins the widget to the home screen
- *   WIDGET_UPDATE  – system / WorkManager periodic refresh
- *   WIDGET_RESIZED – user resizes the widget cell
- *   WIDGET_DELETED – user removes the widget (cleanup only)
- *   WIDGET_CLICK   – user taps the widget (opens the app)
- *
- * The correct API is:
- *   props.renderWidget(<JSX />) — not props.widget.renderWidget(...)
+ * Headless JS task handler for react-native-android-widget.
+ * Reads exams from AsyncStorage (user-managed data).
  */
 
 import React from 'react';
 import type {WidgetTaskHandlerProps} from 'react-native-android-widget';
-import {EXAM_SCHEDULE} from './data/examSchedule';
+import {getExams} from './data/examStorage';
 import {getNextExam, getCountdown} from './utils/countdownUtils';
 import {ExamCountdownWidget} from './widgets/ExamCountdownWidget';
 
-// ─── Handler ──────────────────────────────────────────────────────────────────
-
-/**
- * The async function passed to `registerWidgetTaskHandler` in index.js.
- * React-native-android-widget calls this in a headless JS context.
- */
 export async function widgetTaskHandler(
   props: WidgetTaskHandlerProps,
 ): Promise<void> {
@@ -34,7 +18,8 @@ export async function widgetTaskHandler(
     case 'WIDGET_ADDED':
     case 'WIDGET_UPDATE':
     case 'WIDGET_RESIZED': {
-      const nextExam = getNextExam(EXAM_SCHEDULE);
+      const exams = await getExams();
+      const nextExam = getNextExam(exams);
 
       if (!nextExam) {
         props.renderWidget(
@@ -67,15 +52,12 @@ export async function widgetTaskHandler(
     }
 
     case 'WIDGET_DELETED':
-      // No cleanup needed for a stateless schedule widget.
       break;
 
     case 'WIDGET_CLICK':
-      // A tap on the widget will open the main app (handled natively).
       break;
 
     default:
-      // Re-render on any unknown future action.
       break;
   }
 }

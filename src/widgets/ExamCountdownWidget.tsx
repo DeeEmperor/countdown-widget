@@ -140,6 +140,8 @@ export function ExamCountdownWidget({
         style={{
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
+          width: 'match_parent',
         }}>
         <TextWidget
           text="NEXT EXAM"
@@ -147,6 +149,14 @@ export function ExamCountdownWidget({
             fontSize: 10,
             color: ACCENT_LIGHT,
             fontWeight: 'bold',
+          }}
+        />
+        <TextWidget
+          text="WithLove, Dave!"
+          style={{
+            fontSize: 8,
+            color: TEXT_SUB,
+            fontStyle: 'italic',
           }}
         />
       </FlexWidget>
